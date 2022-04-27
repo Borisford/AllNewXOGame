@@ -144,7 +144,7 @@ public class PlayGroundEntity {
         return 0L;
     }
 
-    private char getSign(int cell) throws NoCellException, IncorrectSignException {
+    private char getSign(int cell) throws NoCellException{
         if (cell >= this.content.length) {
             throw new NoCellException("В игре нет такой ячейки");
         }
@@ -155,8 +155,23 @@ public class PlayGroundEntity {
         return sign;
     }
 
+    private static char getSign(int cell, char[] content) throws NoCellException{
+        if (cell >= content.length) {
+            throw new NoCellException("В игре нет такой ячейки");
+        }
+        char sign = content[cell];
+        if (sign == 0) {
+            return '-';
+        }
+        return sign;
+    }
+
     public int getSide() {
         return (int) Math.sqrt(this.content.length);
+    }
+
+    public static int getSide(char[] content) {
+        return (int) Math.sqrt(content.length);
     }
 
     public int getStepNo() {
@@ -328,6 +343,22 @@ public class PlayGroundEntity {
             }
         }
         return target;
+    }
+
+    public static String[] getStrings(char[] content) throws NoCellException {
+        int side = getSide(content);
+        String[] res = new String[side];
+        for (int i = 0; i < side; i++) {
+            res[i] = "";
+            res[i] += '[';
+            res[i] += getSign(i * side, content);
+            for (int j = 1; j < side; j++) {
+                res[i] += '|';
+                res[i] += getSign(i * side + j, content);
+            }
+            res[i] += ']';
+        }
+        return res;
     }
 
     public String[] getStrings() throws NoCellException, IncorrectSignException {

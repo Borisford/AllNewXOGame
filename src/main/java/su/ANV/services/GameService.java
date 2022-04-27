@@ -149,7 +149,7 @@ public class GameService {
             stepNo = playGroundEntity.getStepNo();
             tmpAIID = playGroundEntity.getCurrentPlayersID();
             sign = playGroundEntity.getPlayersSignByStepNo(tmpAIID);
-            cell = AI.ai(playGroundEntity.getContent(), tmpAIID);
+            cell = AI.ai(playGroundEntity.getContent(), tmpAIID, sign);
             playGroundEntity.setSign(tmpAIID, cell);
             stepRepository.save(new StepEntity(playGroundEntity.getId(), playGroundEntity.getPlayGroundKey(), tmpAIID, tmpAIID, cell, stepNo, sign));
             playGroundRepository.save(playGroundEntity);
@@ -167,7 +167,7 @@ public class GameService {
         }
         Long winnerId = playGroundEntity.getPlayersIDBySign(win);
         if (winnerId < 0) {
-            throw new GameOverException("Бот победил.");
+            throw new GameOverException("Бот " +AI.getAIName(winnerId)+ " победил.");
         }
         throw new GameOverException("Победил " + playerRepository.getById(winnerId).getName());
     }

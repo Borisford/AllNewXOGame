@@ -24,6 +24,15 @@ public class PlayerController {
         }
     }
 
+    @GetMapping("/{playerKey}")
+    public ResponseEntity getPlayer(@PathVariable Long playerKey) {
+        try {
+            return ResponseEntity.ok(playerService.getPlayer(playerKey));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Произошла ошибка");
+        }
+    }
+
 
     @PostMapping
     public ResponseEntity createPlayer(@RequestParam String name) {

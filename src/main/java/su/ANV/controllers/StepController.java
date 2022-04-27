@@ -17,7 +17,7 @@ public class StepController {
     private GameService gameService;
 
     @GetMapping
-    public ResponseEntity getAllPayers() {
+    public ResponseEntity getAllSteps() {
         try {
             return ResponseEntity.ok(stepService.getAllSteps());
         } catch (Exception e) {
@@ -26,9 +26,11 @@ public class StepController {
     }
 
     @GetMapping("/{playGroundKey}")
-    public ResponseEntity getAllPayers(@PathVariable Long playGroundKey) {
+    public ResponseEntity getTheGame(@PathVariable Long playGroundKey) throws NoCellException {
         try {
             return ResponseEntity.ok(stepService.getTheGame(playGroundKey));
+        } catch (NoCellException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Произошла ошибка");
         }

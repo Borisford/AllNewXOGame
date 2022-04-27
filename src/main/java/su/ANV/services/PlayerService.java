@@ -38,4 +38,8 @@ public class PlayerService {
         }
         return playerEntities;
     }
+
+    public Object getPlayer(Long playerKey) {
+        return playerRepository.findByPlayerKey(playerKey);
+    }
 }
