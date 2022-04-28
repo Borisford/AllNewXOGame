@@ -1,4 +1,4 @@
-package su.ANV.controllers;
+package su.ANV.controllers.restControllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,9 +15,18 @@ public class PlayGroundController {
     private PlayGroundService playGroundService;
 
     @GetMapping
-    public ResponseEntity getAllPayers() {
+    public ResponseEntity getAllPlayGrounds() {
         try {
             return ResponseEntity.ok(playGroundService.getAllPlayGrounds());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Произошла ошибка");
+        }
+    }
+
+    @GetMapping("/{playerKey}")
+    public ResponseEntity getPlayer(@PathVariable Long playerKey) {
+        try {
+            return ResponseEntity.ok(playGroundService.getPlayGround(playerKey));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Произошла ошибка");
         }

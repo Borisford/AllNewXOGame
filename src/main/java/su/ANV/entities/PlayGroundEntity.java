@@ -1,5 +1,6 @@
 package su.ANV.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.GenericGenerator;
 import su.ANV.exeptions.*;
 
@@ -9,7 +10,7 @@ import javax.persistence.Id;
 import java.util.Arrays;
 
 @Entity
-//@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class PlayGroundEntity {
 
     @Id

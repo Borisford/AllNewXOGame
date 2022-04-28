@@ -1,4 +1,4 @@
-package su.ANV.controllers;
+package su.ANV.controllers.restControllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

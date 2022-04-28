@@ -1,0 +1,21 @@
+@RequestMapping("/gameplay/rest/steps")
+@GetMapping	getAllSteps	Получить все ходы всех игр
+@GetMapping("/{playGroundKey}")	getTheGame	Получить все ходы одной игры
+@PostMapping	makeManualStep	Сделать ход в игре
+@RequestMapping("/gameplay/rest/start")
+@PostMapping("/simple/auto")	startComplexGame	Начать игру 3х3 между двумя ботами
+@PostMapping("/simple/single")	startSingleGame	Начать игру 3х3 между игроком и ботом
+@PostMapping("/simple/multi")	startMultiPlayerGame	Начать игру 3х3 между двумя игрокам
+@PostMapping("/complex/auto")	startComplexAutoGame	Начать игру (n+1)х(n+1) между n < 6 ботов
+@PostMapping("/complex/single")	startComplexSingleGame	Начать игру (n+1)х(n+1) между n < 5 ботов и одним игроком
+@PostMapping("/complex/multi")	startComplexMultiPlayerGame	Начать игру (n+1)х(n+1) между n < 6 игроков
+@RequestMapping("/gameplay/rest/playGrounds")
+@GetMapping	getAllPlayGrounds	Получить все игры
+@RequestMapping("/gameplay/rest/players")
+@GetMapping	getAllPayers	Получить всех игроков
+@GetMapping("/{playerKey}")	getPlayer	Получить игрока по его ключу
+@PostMapping	createPlayer	Создать игрока
+@PutMapping	addPlayer	Добавить игрока в игру(только добавленные игроки могут делать ходы)
+@RequestMapping("/gameplay/rest/winners")
+@GetMapping("/player/{winnerId}")	getNumberOfPlayersWins	Получить количество побед игрока по его ID
+@GetMapping("/game/{playGroundId}")	getGameWinnerName	Узнать победителя в игре по его ID

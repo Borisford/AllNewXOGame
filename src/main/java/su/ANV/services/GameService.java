@@ -5,11 +5,13 @@ import org.springframework.stereotype.Service;
 import su.ANV.entities.PlayGroundEntity;
 import su.ANV.entities.PlayerEntity;
 import su.ANV.entities.StepEntity;
+import su.ANV.entities.WinEntity;
 import su.ANV.exeptions.*;
 import su.ANV.models.Step;
 import su.ANV.repositories.PlayGroundRepository;
 import su.ANV.repositories.PlayerRepository;
 import su.ANV.repositories.StepRepository;
+import su.ANV.repositories.WinRepository;
 import su.ANV.units.AI.AI;
 
 import java.util.Random;
@@ -24,6 +26,9 @@ public class GameService {
 
     @Autowired
     private StepRepository stepRepository;
+
+    @Autowired
+    private WinRepository winRepository;
 
     public PlayGroundEntity addPlayerToPlayerToPlayGround(Long playerKey, Long playGroundKey)
             throws NoGameException, NoPlayerException, GameIsFullException, PlayerAlreadyInGameException {
@@ -163,12 +168,15 @@ public class GameService {
             return;
         }
         if (win == 1) {
+            winRepository.save(new WinEntity(playGroundEntity.getId(), (long) win));
             throw new GameOverException("Игра закончилась вничью.");
         }
         Long winnerId = playGroundEntity.getPlayersIDBySign(win);
         if (winnerId < 0) {
-            throw new GameOverException("Бот " +AI.getAIName(winnerId)+ " победил.");
+            winRepository.save(new WinEntity(playGroundEntity.getId(),winnerId));
+            throw new GameOverException("Игра закончилась победой бота " +AI.getAIName(winnerId));
         }
-        throw new GameOverException("Победил " + playerRepository.getById(winnerId).getName());
+        winRepository.save(new WinEntity(playGroundEntity.getId(),winnerId));
+        throw new GameOverException("Игра закончилась победой игрока " + playerRepository.getById(winnerId).getName());
     }
 }

@@ -37,5 +37,7 @@ public class PlayGroundService {
         return playGroundEntities;
     }
 
-
+    public Object getPlayGround(Long playGroundKey) {
+        return playGroundRepository.findByPlayGroundKey(playGroundKey);
+    }
 }
