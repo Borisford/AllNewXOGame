@@ -34,7 +34,8 @@ public class StepFrontController {
             model.addAttribute("playGroundKey", playGroundKey);
             model.addAttribute("playGroundId", playGroundId);
             gameService.end(playGroundId);
-            if (gameService.isYourStep(playGroundId, playerId) && cell != -1) {
+            int size = gameService.getPlayGround(playGroundId).getContent().length;
+            if (gameService.isYourStep(playGroundId, playerId) && cell > -1 && cell < size) {
                 playGroundEntity = gameService.steps(playerKey, playerId, playGroundKey, playGroundId, cell);
                 model.addAttribute("strings", playGroundEntity.getStringsNum());
             } else {
