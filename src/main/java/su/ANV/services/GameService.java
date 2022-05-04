@@ -2,6 +2,7 @@ package su.ANV.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 import su.ANV.entities.PlayGroundEntity;
 import su.ANV.entities.PlayerEntity;
 import su.ANV.entities.StepEntity;
@@ -144,6 +145,37 @@ public class GameService {
         return playGroundEntity.getStrings();
     }
 
+    public PlayGroundEntity steps(Long playerKey, Long playerId, Long playGroundKey, Long playGroundId, int cell)
+            throws NotAIIDException, NoVariantsException, NoCellException, NoPlayerInGameException, NotEmptyCellException, IncorrectSignException, GameOverException, NoGameException {
+        PlayGroundEntity playGroundEntity = playGroundRepository.getById(playGroundId);
+        //проверка на gameIsFull
+        if (!playGroundEntity.getPlayGroundKey().equals(playGroundKey)) {
+            throw new NoGameException("Нет такой игры");
+        }
+        PlayerEntity playerEntity = playerRepository.getById(playerId);
+        if (!playerEntity.getPlayerKey().equals(playerKey)) {
+            throw new NoPlayerInGameException("В игре нет такого игрока");
+        }
+        char sign;
+        allAISteps(playGroundEntity);
+        int stepNo = playGroundEntity.getStepNo();
+        sign = playGroundEntity.getPlayersSignByStepNo(playerId);
+        playGroundEntity.setSign(playerId, cell);
+        stepRepository.save(new StepEntity(playGroundId, playGroundKey, playerId, playerKey, cell, stepNo, sign));
+        playGroundRepository.save(playGroundEntity);
+        allAISteps(playGroundEntity);
+        playGroundEntity = playGroundRepository.getById(playGroundId);
+        return playGroundEntity;
+    }
+
+    public boolean isYourStep(Long playGroundId, Long playerId) {
+        return playGroundRepository.getById(playGroundId).getCurrentPlayersID().equals(playerId);
+    }
+
+    public PlayGroundEntity getPlayGround(Long playGroundId) {
+        return playGroundRepository.getById(playGroundId);
+    }
+
     private void allAISteps(PlayGroundEntity playGroundEntity) throws NotAIIDException, NoVariantsException, NoCellException, NoPlayerInGameException, NotEmptyCellException, GameOverException {
         int stepNo;
         int cell;
@@ -160,6 +192,10 @@ public class GameService {
             playGroundRepository.save(playGroundEntity);
             whoWin(playGroundEntity);
         }
+    }
+
+    public void end(Long playGroundId) throws GameOverException {
+        whoWin(playGroundRepository.getById(playGroundId));
     }
 
     private void whoWin(PlayGroundEntity playGroundEntity) throws GameOverException {

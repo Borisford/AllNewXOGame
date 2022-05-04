@@ -1,0 +1,50 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" />
+</head>
+<body>
+
+<div class="container mt-5 mb-5">
+
+    <h1 th:text="_About_REST_API_" /><br>
+    <div>@RequestMapping(/gameplay/rest/steps)</div>
+    <div>@GetMapping getAllSteps	Получить все ходы всех игр</div>
+    <div>@GetMapping("/{playGroundKey}")	getTheGame	Получить все ходы одной игры</div>
+    <div>@PostMapping	makeManualStep	Сделать ход в игре</div>
+    <div>@RequestMapping("/gameplay/rest/start")</div>
+    <div>@PostMapping("/simple/auto")	startComplexGame	Начать игру 3х3 между двумя ботами</div>
+    <div>@PostMapping("/simple/single")	startSingleGame	Начать игру 3х3 между игроком и ботом</div>
+    <div>@PostMapping("/simple/multi")	startMultiPlayerGame	Начать игру 3х3 между двумя игрокам</div>
+    <div>@PostMapping("/complex/auto")	startComplexAutoGame	Начать игру (n+1)х(n+1) между n < 6 ботов</div>
+    <div>@PostMapping("/complex/single")	startComplexSingleGame	Начать игру (n+1)х(n+1) между n < 5 ботов и одним игроком</div>
+    <div>@PostMapping("/complex/multi")	startComplexMultiPlayerGame	Начать игру (n+1)х(n+1) между n < 6 игроков</div>
+    <div>@RequestMapping("/gameplay/rest/playGrounds")</div>
+    <div>@GetMapping	getAllPlayGrounds	Получить все игры</div>
+    <div>@RequestMapping("/gameplay/rest/players")</div>
+    <div>@GetMapping	getAllPayers	Получить всех игроков</div>
+    <div>@GetMapping("/{playerKey}")	getPlayer	Получить игрока по его ключу</div>
+    <div>@PostMapping	createPlayer	Создать игрока</div>
+    <div>@PutMapping	addPlayer	Добавить игрока в игру(только добавленные игроки могут делать ходы)</div>
+    <div>@RequestMapping("/gameplay/rest/winners")</div>
+    <div>@GetMapping("/player/{winnerId}")	getNumberOfPlayersWins	Получить количество побед игрока по его ID</div>
+    <div>@GetMapping("/game/{playGroundId}")	getGameWinnerName	Узнать победителя в игре по его ID</div>
+
+
+
+
+
+
+</div>
+<div class="container mt-5 mb-5">
+    <a class="me-3 py-2 text-dark text-decoration-none" href="/gameplay/front/main">Назад</a>
+</div>
+<footer class="text-muted py-5">
+    <div class="container">
+        <p class="mb-1">Album example is © Bootstrap, but please download and customize it for yourself!</p>
+        <p class="mb-0">New to Bootstrap? <a href="/">Visit the homepage</a> or read our <a href="/docs/5.1/getting-started/introduction/">getting started guide</a>.</p>
+    </div>
+</footer>
+</body>
+</html>

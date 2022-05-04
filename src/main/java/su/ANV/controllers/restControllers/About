@@ -19,3 +19,5 @@
 @RequestMapping("/gameplay/rest/winners")
 @GetMapping("/player/{winnerId}")	getNumberOfPlayersWins	Получить количество побед игрока по его ID
 @GetMapping("/game/{playGroundId}")	getGameWinnerName	Узнать победителя в игре по его ID
+
+

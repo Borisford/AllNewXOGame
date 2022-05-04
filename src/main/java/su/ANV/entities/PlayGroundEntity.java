@@ -156,6 +156,17 @@ public class PlayGroundEntity {
         return sign;
     }
 
+    private String getSignNum(int cell) throws NoCellException{
+        if (cell >= this.content.length) {
+            throw new NoCellException("В игре нет такой ячейки");
+        }
+        char sign = this.content[cell];
+        if (sign == 0) {
+            return "" + cell;
+        }
+        return "" + sign;
+    }
+
     private static char getSign(int cell, char[] content) throws NoCellException{
         if (cell >= content.length) {
             throw new NoCellException("В игре нет такой ячейки");
@@ -346,9 +357,42 @@ public class PlayGroundEntity {
         return target;
     }
 
+    public String[][] getStringsNum(char[] content) throws NoCellException {
+        int side = getSide(content);
+        String cell;
+        String[] str;
+        String[][] res = new String[side][side];
+        for (int i = 0; i < side; i++) {
+            str = new String[side];
+            for (int j = 0; j < side; j++) {
+                cell = new String();
+                cell = "[";
+                cell += getSign(i * side + j, content);
+                cell += ']';
+                str[j] = cell;
+            }
+            res[i] = str;
+        }
+        return res;
+        /*int side = getSide(content);
+        String[] res = new String[side];
+        for (int i = 0; i < side; i++) {
+            res[i] = "";
+            res[i] += '[';
+            res[i] += getSign(i * side, content);
+            for (int j = 1; j < side; j++) {
+                res[i] += '|';
+                res[i] += getSign(i * side + j, content);
+            }
+            res[i] += ']';
+        }
+        return res;*/
+    }
+
     public static String[] getStrings(char[] content) throws NoCellException {
         int side = getSide(content);
-        String[] res = new String[side];
+        String[] res;
+        res = new String[side];
         for (int i = 0; i < side; i++) {
             res[i] = "";
             res[i] += '[';
@@ -372,6 +416,22 @@ public class PlayGroundEntity {
             for (int j = 1; j < side; j++) {
                 res[i] += '|';
                 res[i] += getSign(i * side + j);
+            }
+            res[i] += ']';
+        }
+        return res;
+    }
+
+    public String[] getStringsNum() throws NoCellException, IncorrectSignException {
+        int side = this.getSide();
+        String[] res = new String[side];
+        for (int i = 0; i < side; i++) {
+            res[i] = "";
+            res[i] += '[';
+            res[i] += getSignNum(i * side);
+            for (int j = 1; j < side; j++) {
+                res[i] += '|';
+                res[i] += getSignNum(i * side + j);
             }
             res[i] += ']';
         }
