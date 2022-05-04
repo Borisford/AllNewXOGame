@@ -24,7 +24,7 @@ public class PlayerService {
             throw new NotUniquePlayerException("Имя " + name + " уже используется.");
         }
         Random random = new Random();
-        Long playerKey = random.nextLong();
+        long playerKey = random.nextLong();
         while (playerRepository.existsByPlayerKey(playerKey)) {
             playerKey = random.nextLong();
         }
@@ -32,11 +32,7 @@ public class PlayerService {
     }
 
     public List<PlayerEntity> getAllPlayers() {
-        List<PlayerEntity> playerEntities = new ArrayList<>();
-        for (PlayerEntity playerEntity : playerRepository.findAll()) {
-            playerEntities.add(playerEntity);
-        }
-        return playerEntities;
+        return new ArrayList<>(playerRepository.findAll());
     }
 
     public Object getPlayer(Long playerKey) {

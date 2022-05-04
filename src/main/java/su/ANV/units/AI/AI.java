@@ -21,10 +21,7 @@ public class AI{
     }
 
     public static Long giveAI (int level) {
-        Long x = (long) ((new Random().nextInt(2) + 1) * (-1));
-        //System.out.println(x);
-        return x;
-        //return Long.valueOf((new Random().nextInt(1) + 1) * - 1);
+        return (long) ((new Random().nextInt(2) + 1) * (-1));
     }
 
     public static int ai (char[] content, Long id, char sign) throws NotAIIDException, NoVariantsException {
@@ -52,7 +49,7 @@ public class AI{
         return variants.get(new Random().nextInt(variants.size()));
     }
 
-    public static int linesStep(char[] content, char sign) throws NoVariantsException {
+    public static int linesStep(char[] content, char sign){
         int[] chance = new int[content.length];
         for (int i = 0; i < chance.length; i++) {
             if (content[i] == 0 ) {
@@ -81,14 +78,14 @@ public class AI{
     private static void rowsAndColumns(char[] content, int[] chance, int side, char target) {
         for (int i = 1; i < side; i++) {
             if (row(content, i, side, target)) {
-                doRow(content, chance, i, side, target);
+                doRow(content, chance, i, side);
             }
             if (column(content, i, side, target)) {
-                doColumn(content, chance, i, side, target);
+                doColumn(content, chance, i, side);
             }
         }
-        diag1(content, chance, side, target);
-        diag2(content, chance, side, target);
+        diagonal1(content, chance, side, target);
+        diagonal2(content, chance, side, target);
     }
 
     private static boolean row(char[] content, int rowNum, int side, char target) {
@@ -100,7 +97,7 @@ public class AI{
         return true;
     }
 
-    private static void doRow(char[] content, int[] chance, int rowNum, int side, char target) {
+    private static void doRow(char[] content, int[] chance, int rowNum, int side) {
         for (int i = 1; i < side; i++) {
             if (content[side * rowNum + i] == 0) {
                 chance[side * rowNum + i] += 1;
@@ -117,7 +114,7 @@ public class AI{
         return true;
     }
 
-    private static void doColumn(char[] content, int[] chance, int columnNum, int side, char target) {
+    private static void doColumn(char[] content, int[] chance, int columnNum, int side) {
         for (int i = 1; i < side; i++) {
             if (content[columnNum + side * i] == 0) {
                 chance[columnNum + side * i] += 1;
@@ -125,7 +122,7 @@ public class AI{
         }
     }
 
-    private static void diag1(char[] content, int[] chance, int side, char target) {
+    private static void diagonal1(char[] content, int[] chance, int side, char target) {
         for (int i = 1; i < side; i++) {
             if (content[i + side * i] != target && content[i + side * i] != 0) {
                 return;
@@ -138,7 +135,7 @@ public class AI{
         }
     }
 
-    private static void diag2(char[] content, int[] chance, int side, char target) {
+    private static void diagonal2(char[] content, int[] chance, int side, char target) {
         for (int i = 1; i < side; i++) {
             if (content[side * (i + 1) - i - 1] != target && content[side * (i + 1) - i - 1] != 0) {
                 return;

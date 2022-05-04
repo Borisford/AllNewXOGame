@@ -49,8 +49,7 @@ public class StepFrontController {
         } catch (GameOverException e){
             model.addAttribute("massage", e.getMessage());
             return  "endTheGame";
-        } catch (NoCellException | IncorrectSignException | NotAIIDException | NoVariantsException |
-                NoPlayerInGameException | NotEmptyCellException | NoGameException e) {
+        } catch (NoCellException | IncorrectSignException | NotAIIDException | NoVariantsException | NoPlayerInGameException | NotEmptyCellException | NoGameException | GameIsNotFullException e) {
             e.printStackTrace();
             if (gameService.isYourStep(playGroundId, playerId)) {
                 return  "yourStep";

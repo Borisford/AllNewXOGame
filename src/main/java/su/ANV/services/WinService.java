@@ -2,15 +2,11 @@ package su.ANV.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import su.ANV.entities.PlayerEntity;
 import su.ANV.entities.WinEntity;
-import su.ANV.exeptions.GameOverException;
 import su.ANV.exeptions.NoGameException;
 import su.ANV.repositories.PlayerRepository;
 import su.ANV.repositories.WinRepository;
 import su.ANV.units.AI.AI;
-
-import java.util.List;
 
 @Service
 public class WinService {

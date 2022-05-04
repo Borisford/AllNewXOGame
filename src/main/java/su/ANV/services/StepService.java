@@ -28,11 +28,7 @@ public class StepService {
     private PlayGroundRepository playGroundRepository;
 
     public List<StepEntity> getAllSteps() {
-        List<StepEntity> stepEntities = new ArrayList<>();
-        for (StepEntity stepEntity : stepRepository.findAll()) {
-            stepEntities.add(stepEntity);
-        }
-        return stepEntities;
+        return new ArrayList<>(stepRepository.findAll());
     }
 
     public List<DemoStep> getTheGame(Long playGroundKey) throws NoCellException {

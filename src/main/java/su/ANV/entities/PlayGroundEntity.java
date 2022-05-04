@@ -97,10 +97,6 @@ public class PlayGroundEntity {
         this.content = content;
     }
 
-    public char[] getContentClone() {
-        return this.content.clone();
-    }
-
     private boolean fieldIsFull() {
         for (char tmp : this.content) {
             if (tmp == 0) {
@@ -198,11 +194,6 @@ public class PlayGroundEntity {
         this.stepNo = this.stepNo + 1;
     }
 
-    public boolean thisPlayersStep(Long id) {
-        int tmp = this.stepNo % this.playerIDs.length;
-        return this.playerIDs[tmp].equals(id);
-    }
-
     public boolean isNextPlayerAI() {
         int tmp = this.stepNo % this.playerIDs.length;
         return this.playerIDs[tmp] < 0L;
@@ -281,11 +272,11 @@ public class PlayGroundEntity {
         if (tmp != 0) {
             return tmp;
         }
-        tmp = diag1(side);
+        tmp = diagonal1(side);
         if (tmp != 0) {
             return tmp;
         }
-        tmp = diag2(side);
+        tmp = diagonal2(side);
         if (tmp != 0) {
             return tmp;
         }
@@ -337,7 +328,7 @@ public class PlayGroundEntity {
         return target;
     }
 
-    private char diag1(int side) {
+    private char diagonal1(int side) {
         char target = this.content[0];
         for (int i = 1; i < side; i++) {
             if (this.content[i + side * i] != target) {
@@ -347,7 +338,7 @@ public class PlayGroundEntity {
         return target;
     }
 
-    private char diag2(int side) {
+    private char diagonal2(int side) {
         char target = this.content[side - 1];
         for (int i = 1; i < side; i++) {
             if (this.content[side * (i + 1) - i - 1] != target) {
@@ -355,38 +346,6 @@ public class PlayGroundEntity {
             }
         }
         return target;
-    }
-
-    public String[][] getStringsNum(char[] content) throws NoCellException {
-        int side = getSide(content);
-        String cell;
-        String[] str;
-        String[][] res = new String[side][side];
-        for (int i = 0; i < side; i++) {
-            str = new String[side];
-            for (int j = 0; j < side; j++) {
-                cell = new String();
-                cell = "[";
-                cell += getSign(i * side + j, content);
-                cell += ']';
-                str[j] = cell;
-            }
-            res[i] = str;
-        }
-        return res;
-        /*int side = getSide(content);
-        String[] res = new String[side];
-        for (int i = 0; i < side; i++) {
-            res[i] = "";
-            res[i] += '[';
-            res[i] += getSign(i * side, content);
-            for (int j = 1; j < side; j++) {
-                res[i] += '|';
-                res[i] += getSign(i * side + j, content);
-            }
-            res[i] += ']';
-        }
-        return res;*/
     }
 
     public static String[] getStrings(char[] content) throws NoCellException {

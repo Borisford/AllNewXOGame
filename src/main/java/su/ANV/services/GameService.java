@@ -2,7 +2,6 @@ package su.ANV.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 import su.ANV.entities.PlayGroundEntity;
 import su.ANV.entities.PlayerEntity;
 import su.ANV.entities.StepEntity;
@@ -57,7 +56,7 @@ public class GameService {
     public PlayGroundEntity startComplexMultiPlayerGame(Long playerKey, int numberOfPlayers)
             throws BadNumberOfPlayersException, BadPlaygroundSideException, PlayerAlreadyInGameException, GameIsFullException {
         Random random = new Random();
-        Long playGroundKeyKey = random.nextLong();
+        long playGroundKeyKey = random.nextLong();
         while (playGroundRepository.existsByPlayGroundKey(playGroundKeyKey)) {
             playGroundKeyKey = random.nextLong();
         }
@@ -78,7 +77,7 @@ public class GameService {
 
     public PlayGroundEntity startComplexSinglePlayerGame(Long playerKey, int numberOfPlayers) throws BadNumberOfPlayersException, BadPlaygroundSideException, PlayerAlreadyInGameException, GameIsFullException {
         Random random = new Random();
-        Long playGroundKeyKey = random.nextLong();
+        long playGroundKeyKey = random.nextLong();
         while (playGroundRepository.existsByPlayGroundKey(playGroundKeyKey)) {
             playGroundKeyKey = random.nextLong();
         }
@@ -106,7 +105,7 @@ public class GameService {
             throws BadNumberOfPlayersException, BadPlaygroundSideException, GameIsFullException,
             NotAIIDException, NoCellException, NoVariantsException, NoPlayerInGameException, NotEmptyCellException, GameOverException {
         Random random = new Random();
-        Long playGroundKeyKey = random.nextLong();
+        long playGroundKeyKey = random.nextLong();
         while (playGroundRepository.existsByPlayGroundKey(playGroundKeyKey)) {
             playGroundKeyKey = random.nextLong();
         }
@@ -146,9 +145,11 @@ public class GameService {
     }
 
     public PlayGroundEntity steps(Long playerKey, Long playerId, Long playGroundKey, Long playGroundId, int cell)
-            throws NotAIIDException, NoVariantsException, NoCellException, NoPlayerInGameException, NotEmptyCellException, IncorrectSignException, GameOverException, NoGameException {
+            throws NotAIIDException, NoVariantsException, NoCellException, NoPlayerInGameException, NotEmptyCellException, IncorrectSignException, GameOverException, NoGameException, GameIsNotFullException {
         PlayGroundEntity playGroundEntity = playGroundRepository.getById(playGroundId);
-        //проверка на gameIsFull
+        if (!playGroundEntity.gameIsFull()) {
+            throw new GameIsNotFullException("Дождитесь остальных игроков");
+        }//проверка на gameIsFull
         if (!playGroundEntity.getPlayGroundKey().equals(playGroundKey)) {
             throw new NoGameException("Нет такой игры");
         }
