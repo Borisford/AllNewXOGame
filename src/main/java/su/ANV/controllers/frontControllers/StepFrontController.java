@@ -27,36 +27,65 @@ public class StepFrontController {
     @PostMapping
     public String stepFront(Model model, @RequestParam Long playerKey, @RequestParam Long playerId,
                        @RequestParam Long playGroundKey, @RequestParam Long playGroundId, @RequestParam int cell) {
-        PlayGroundEntity playGroundEntity;
+        model.addAttribute("playerKey", playerKey);
+        model.addAttribute("playerId", playerId);
+        model.addAttribute("playGroundKey", playGroundKey);
+        model.addAttribute("playGroundId", playGroundId);
         try {
-            model.addAttribute("playerKey", playerKey);
-            model.addAttribute("playerId", playerId);
-            model.addAttribute("playGroundKey", playGroundKey);
-            model.addAttribute("playGroundId", playGroundId);
             gameService.end(playGroundId);
-            int size = gameService.getPlayGround(playGroundId).getContent().length;
-            if (gameService.isYourStep(playGroundId, playerId) && cell > -1 && cell < size) {
-                playGroundEntity = gameService.steps(playerKey, playerId, playGroundKey, playGroundId, cell);
-                model.addAttribute("strings", playGroundEntity.getStringsNum());
-            } else {
-                playGroundEntity = gameService.getPlayGround(playGroundId);
-                model.addAttribute("strings", playGroundEntity.getStringsNum());
-            }
-            if (gameService.isYourStep(playGroundId, playerId)) {
-                return "yourStep";
-            } else {
-                return "notYourStep";
-            }
-        } catch (GameOverException e){
-            model.addAttribute("massage", e.getMessage());
+        } catch (GameOverException e) {
+            //e.printStackTrace();
+            model.addAttribute("message", e.getMessage());
             return  "endTheGame";
-        } catch (NoCellException | IncorrectSignException | NotAIIDException | NoVariantsException | NoPlayerInGameException | NotEmptyCellException | NoGameException | GameIsNotFullException e) {
+        }
+        PlayGroundEntity playGroundEntity = gameService.getPlayGround(playGroundId);
+        try {
+            model.addAttribute("strings", playGroundEntity.getStringsNum());
+        } catch (NoCellException e) {
             e.printStackTrace();
-            if (gameService.isYourStep(playGroundId, playerId)) {
-                return  "yourStep";
-            } else {
-                return  "notYourStep";
+        } catch (IncorrectSignException e) {
+            e.printStackTrace();
+        }
+        //if (gameService.isYourStep(playGroundId, playerId) && cell > -1 && cell < gameService.getPlayGround(playGroundId).getContent().length) {
+        if (gameService.isYourStep(playGroundId, playerId)) {
+            try {
+                playGroundEntity = gameService.steps(playerKey, playerId, playGroundKey, playGroundId, cell);
+            } catch (NotAIIDException e) {
+                e.printStackTrace();
+            } catch (NoVariantsException e) {
+                e.printStackTrace();
+            } catch (NoCellException e) {
+                //e.printStackTrace();
+                model.addAttribute("message", "Выбранной ячейки не существует");
+            } catch (NoPlayerInGameException e) {
+                e.printStackTrace();
+            } catch (NotEmptyCellException e) {
+                //e.printStackTrace();
+                model.addAttribute("message", "Выбранная ячейка не пуста");
+            } catch (IncorrectSignException e) {
+                e.printStackTrace();
+            } catch (GameOverException e) {
+                //e.printStackTrace();
+                model.addAttribute("message", e.getMessage());
+                return  "endTheGame";
+            } catch (NoGameException e) {
+                e.printStackTrace();
+            } catch (GameIsNotFullException e) {
+                //e.printStackTrace();
+                model.addAttribute("message", "Ждем других игроков");
             }
+        }
+        try {
+            model.addAttribute("strings", playGroundEntity.getStringsNum());
+        } catch (NoCellException e) {
+            e.printStackTrace();
+        } catch (IncorrectSignException e) {
+            e.printStackTrace();
+        }
+        if (gameService.isYourStep(playGroundId, playerId)) {
+            return "yourStep";
+        } else {
+            return "notYourStep";
         }
     }
 

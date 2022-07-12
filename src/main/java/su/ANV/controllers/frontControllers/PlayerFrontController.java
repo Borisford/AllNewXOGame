@@ -23,7 +23,7 @@ public class PlayerFrontController {
 
     @PostMapping
     public String inputName(Model model) {
-        model.addAttribute("massage", "Выберете себе имя.");
+        model.addAttribute("message", "Выберете себе имя.");
         return "addPlayer";
     }
 }

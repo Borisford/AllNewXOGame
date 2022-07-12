@@ -25,7 +25,7 @@ public class MultiFindFrontController {
     }
 
     @PostMapping
-    public String findGame(Model model, @RequestParam Long playerKey, @RequestParam Long playerId, @RequestParam Long playGroundKey) {
+    public String findGame(Model model, @RequestParam Long playerKey, @RequestParam Long playerId, @RequestParam String playGroundKey) {
         PlayGroundEntity playGroundEntity;
         model.addAttribute("playerKey", playerKey);
         model.addAttribute("playerId", playerId);
@@ -35,9 +35,11 @@ public class MultiFindFrontController {
             model.addAttribute("playGroundKey", playGroundEntity.getPlayGroundKey());
             model.addAttribute("playGroundId", playGroundEntity.getId());
             model.addAttribute("strings", playGroundEntity.getStringsNum());
+        } catch (NumberFormatException e) {
+            model.addAttribute("message", "Формат номера игры некорректен");
+            return "gameNumber";
         } catch (NoGameException | NoPlayerException | GameIsFullException | PlayerAlreadyInGameException e) {
-            e.printStackTrace();
-            model.addAttribute("massage", e.getMessage());
+            model.addAttribute("message", e.getMessage());
             return "gameNumber";
         } catch (NoCellException | IncorrectSignException e) {
             e.printStackTrace();

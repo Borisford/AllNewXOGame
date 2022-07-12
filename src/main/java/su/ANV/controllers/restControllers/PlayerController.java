@@ -46,11 +46,13 @@ public class PlayerController {
     }
 
     @PutMapping
-    public ResponseEntity addPlayer(@RequestParam Long playerKey, @RequestParam Long playGroundKey) {
+    public ResponseEntity addPlayer(@RequestParam Long playerKey, @RequestParam String playGroundKey) {
         try {
             return ResponseEntity.ok(gameService.addPlayerToPlayerToPlayGround(playerKey, playGroundKey));
         } catch (NoGameException | GameIsFullException | NoPlayerException | PlayerAlreadyInGameException e){
             return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (NumberFormatException e) {
+            return ResponseEntity.badRequest().body("Формат номера игры некорректен");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Произошла ошибка");
         }

@@ -33,11 +33,11 @@ public class PlayerInputFrontController {
             model.addAttribute("playerId", playerEntity.getId());
             return  "gamesStart";
         } catch (NotUniquePlayerException | NoNameException e) {
-            model.addAttribute("massage", e.getMessage());
+            model.addAttribute("message", e.getMessage());
             return "addPlayer";
         } catch (Exception e) {
-            model.addAttribute("massage", e.getMessage());
+            model.addAttribute("message", e.getMessage());
         }
-        return  "massagePage";
+        return  "messagePage";
     }
 }

@@ -30,8 +30,9 @@ public class GameService {
     @Autowired
     private WinRepository winRepository;
 
-    public PlayGroundEntity addPlayerToPlayerToPlayGround(Long playerKey, Long playGroundKey)
-            throws NoGameException, NoPlayerException, GameIsFullException, PlayerAlreadyInGameException {
+    public PlayGroundEntity addPlayerToPlayerToPlayGround(Long playerKey, String playGroundKeyStr)
+            throws NoGameException, NoPlayerException, GameIsFullException, PlayerAlreadyInGameException, NumberFormatException {
+        Long playGroundKey = Long.valueOf(playGroundKeyStr);
         if (!playerRepository.existsByPlayerKey(playerKey)) {
             throw new NoPlayerException("Игрок не найден");
         }

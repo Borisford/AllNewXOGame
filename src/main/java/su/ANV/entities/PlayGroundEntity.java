@@ -107,7 +107,7 @@ public class PlayGroundEntity {
     }
 
     public void setSign(Long id, int cell) throws NoCellException, NotEmptyCellException, NoPlayerInGameException {
-        if (cell >= this.content.length) {
+        if (cell >= this.content.length || cell < 0) {
             throw new NoCellException("В игре нет такой ячейки");
         }
         if (this.content[cell] != 0) {
