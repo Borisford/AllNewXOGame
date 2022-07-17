@@ -27,13 +27,15 @@ public class MultiFindFrontController {
     @PostMapping
     public String findGame(Model model, @RequestParam Long playerKey, @RequestParam Long playerId, @RequestParam String playGroundKey) {
         PlayGroundEntity playGroundEntity;
+        Long playGroundId = null;
         model.addAttribute("playerKey", playerKey);
         model.addAttribute("playerId", playerId);
         try {
             //Long playGroundKeyL = Long.valueOf(playGroundKey);
             playGroundEntity = gameService.addPlayerToPlayerToPlayGround(playerKey, playGroundKey);
+            playGroundId = playGroundEntity.getId();
             model.addAttribute("playGroundKey", playGroundEntity.getPlayGroundKey());
-            model.addAttribute("playGroundId", playGroundEntity.getId());
+            model.addAttribute("playGroundId", playGroundId);
             model.addAttribute("strings", playGroundEntity.getStringsNum());
         } catch (NumberFormatException e) {
             model.addAttribute("message", "Формат номера игры некорректен");
@@ -42,6 +44,11 @@ public class MultiFindFrontController {
             model.addAttribute("message", e.getMessage());
             return "gameNumber";
         } catch (NoCellException | IncorrectSignException e) {
+            e.printStackTrace();
+        }
+        try {
+            model.addAttribute("symbol", gameService.getSymbol(playerId, playGroundId));
+        } catch (NoPlayerInGameException e) {
             e.printStackTrace();
         }
         return "notYourStep";

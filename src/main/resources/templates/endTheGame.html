@@ -14,6 +14,9 @@
         <button type="submit" class="btn btn-success" id="NewGameButton">Начать новую игру</button>
     </form>
 </div>
+<div th:each="el : ${strings}" class="alert alert-info mt-2" id="GameField">
+    <h3 th:text="${el}"/>
+</div>
 <div class="container mt-5 mb-5">
     <a class="me-3 py-2 text-dark text-decoration-none" href="/gameplay/front/main" id="BackButton">Назад</a>
 </div>

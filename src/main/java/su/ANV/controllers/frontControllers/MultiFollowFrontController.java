@@ -25,7 +25,7 @@ public class MultiFollowFrontController {
     public String followGame(Model model, @RequestParam Long playerKey, @RequestParam Long playerId) {
         model.addAttribute("playerKey", playerKey);
         model.addAttribute("playerId", playerId);
-        model.addAttribute("message", "Присоедениться к игре по номеру");
+        model.addAttribute("message", "Присоединиться к игре по номеру");
         return "gameNumber";
     }
 

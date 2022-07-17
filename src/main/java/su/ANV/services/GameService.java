@@ -217,4 +217,9 @@ public class GameService {
         winRepository.save(new WinEntity(playGroundEntity.getId(),winnerId));
         throw new GameOverException("Игра закончилась победой игрока " + playerRepository.getById(winnerId).getName());
     }
+
+
+    public String getSymbol(Long playerId, Long playGroundId) throws NoPlayerInGameException {
+        return playGroundRepository.getById(playGroundId).getPlayersSignByID(playerId) + "";
+    }
 }

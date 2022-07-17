@@ -27,14 +27,21 @@ public class MultyStartFrontController {
     @PostMapping
     public String startMultyGame(Model model, @RequestParam Long playerKey, @RequestParam Long playerId) {
         PlayGroundEntity playGroundEntity;
+        Long playGroundId = null;
         try {
             playGroundEntity = gameService.startMultiPlayerGame(playerKey);
+            playGroundId = playGroundEntity.getId();
             model.addAttribute("playerKey", playerKey);
             model.addAttribute("playerId", playerId);
             model.addAttribute("playGroundKey", playGroundEntity.getPlayGroundKey());
-            model.addAttribute("playGroundId", playGroundEntity.getId());
+            model.addAttribute("playGroundId", playGroundId);
             model.addAttribute("strings", playGroundEntity.getStringsNum());
         } catch (BadNumberOfPlayersException | GameIsFullException | PlayerAlreadyInGameException | BadPlaygroundSideException | NoCellException | IncorrectSignException e) {
+            e.printStackTrace();
+        }
+        try {
+            model.addAttribute("symbol", gameService.getSymbol(playerId, playGroundId));
+        } catch (NoPlayerInGameException e) {
             e.printStackTrace();
         }
         return  "yourStep";

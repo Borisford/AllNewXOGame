@@ -26,19 +26,32 @@ public class StepFrontController {
 
     @PostMapping
     public String stepFront(Model model, @RequestParam Long playerKey, @RequestParam Long playerId,
-                       @RequestParam Long playGroundKey, @RequestParam Long playGroundId, @RequestParam int cell) {
+                       @RequestParam Long playGroundKey, @RequestParam Long playGroundId, @RequestParam int cell,
+                            @RequestParam int firstTri) {
         model.addAttribute("playerKey", playerKey);
         model.addAttribute("playerId", playerId);
         model.addAttribute("playGroundKey", playGroundKey);
         model.addAttribute("playGroundId", playGroundId);
         try {
+            model.addAttribute("symbol", gameService.getSymbol(playerId, playGroundId));
+        } catch (NoPlayerInGameException e) {
+            e.printStackTrace();
+        }
+        PlayGroundEntity playGroundEntity = gameService.getPlayGround(playGroundId);
+        try {
             gameService.end(playGroundId);
         } catch (GameOverException e) {
             //e.printStackTrace();
             model.addAttribute("message", e.getMessage());
+            try {
+                model.addAttribute("strings", playGroundEntity.getStringsNum());
+            } catch (NoCellException ex) {
+                e.printStackTrace();
+            } catch (IncorrectSignException ex) {
+                e.printStackTrace();
+            }
             return  "endTheGame";
         }
-        PlayGroundEntity playGroundEntity = gameService.getPlayGround(playGroundId);
         try {
             model.addAttribute("strings", playGroundEntity.getStringsNum());
         } catch (NoCellException e) {
@@ -47,7 +60,8 @@ public class StepFrontController {
             e.printStackTrace();
         }
         //if (gameService.isYourStep(playGroundId, playerId) && cell > -1 && cell < gameService.getPlayGround(playGroundId).getContent().length) {
-        if (gameService.isYourStep(playGroundId, playerId)) {
+        //if (gameService.isYourStep(playGroundId, playerId)) {
+        if (gameService.isYourStep(playGroundId, playerId) && firstTri == 0) {
             try {
                 playGroundEntity = gameService.steps(playerKey, playerId, playGroundKey, playGroundId, cell);
             } catch (NotAIIDException e) {
@@ -66,6 +80,13 @@ public class StepFrontController {
                 e.printStackTrace();
             } catch (GameOverException e) {
                 //e.printStackTrace();
+                try {
+                    model.addAttribute("strings", playGroundEntity.getStringsNum());
+                } catch (NoCellException ex) {
+                    e.printStackTrace();
+                } catch (IncorrectSignException ex) {
+                    e.printStackTrace();
+                }
                 model.addAttribute("message", e.getMessage());
                 return  "endTheGame";
             } catch (NoGameException e) {
@@ -83,8 +104,10 @@ public class StepFrontController {
             e.printStackTrace();
         }
         if (gameService.isYourStep(playGroundId, playerId)) {
+            //model.addAttribute("message", "Ждем вашего хода");
             return "yourStep";
         } else {
+            model.addAttribute("message", "Ждем других игроков");
             return "notYourStep";
         }
     }

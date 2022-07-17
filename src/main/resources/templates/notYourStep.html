@@ -10,6 +10,7 @@
     <h1 th:text="'Ваш ключ игры:&nbsp;'+${playGroundKey}" id="PlayGroundKey"/><br>
     <h1 th:text="'Ваш ключ игрока:&nbsp;'+${playerKey}"  id="PlayersKey"/><br>
     <h1 th:text="'Это не ваш ход'" /><br>
+    <h1 th:text="'Ваш символ:&nbsp;'+${symbol}"/><br>
     <h1 th:text="${message}" id="Message"/><br>
 </div>
 
@@ -24,6 +25,7 @@
             <input type="hidden" name="playGroundKey"  th:value=${playGroundKey}>
             <input type="hidden" name="playGroundId"  th:value=${playGroundId}>
             <input type="hidden" name="cell"  th:value=-1>
+            <input type="hidden" name="firstTri"  th:value=1>
             <button type="submit" class="btn btn-success" id="RefreshButton">Обновить</button>
         </form>
     </div>
