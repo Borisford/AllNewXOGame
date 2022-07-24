@@ -12,6 +12,7 @@ import su.ANV.entities.PlayGroundEntity;
 import su.ANV.exeptions.*;
 import su.ANV.services.GameService;
 import su.ANV.services.PlayerService;
+import su.ANV.subEntities.PlayGroundLogic;
 
 @Controller
 @RequestMapping("/gameplay/front/single")
@@ -35,7 +36,7 @@ public class SingleStartFrontController {
             model.addAttribute("playerId", playerId);
             model.addAttribute("playGroundKey", playGroundEntity.getPlayGroundKey());
             model.addAttribute("playGroundId", playGroundId);
-            model.addAttribute("strings", playGroundEntity.getStringsNum());
+            model.addAttribute("strings", PlayGroundLogic.getStringsNum(playGroundEntity));
         } catch (BadNumberOfPlayersException | GameIsFullException | PlayerAlreadyInGameException | BadPlaygroundSideException | NoCellException | IncorrectSignException e) {
             e.printStackTrace();
         }

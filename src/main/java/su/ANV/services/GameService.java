@@ -12,6 +12,7 @@ import su.ANV.repositories.PlayGroundRepository;
 import su.ANV.repositories.PlayerRepository;
 import su.ANV.repositories.StepRepository;
 import su.ANV.repositories.WinRepository;
+import su.ANV.subEntities.PlayGroundLogic;
 import su.ANV.units.AI.AI;
 
 import java.util.Random;
@@ -41,10 +42,10 @@ public class GameService {
         }
         PlayGroundEntity playGroundEntity = playGroundRepository.findByPlayGroundKey(playGroundKey);
         Long playerID = playerRepository.findByPlayerKey(playerKey).getId();
-        if (playGroundEntity.playerIsIn(playerID)) {
+        if (PlayGroundLogic.playerIsIn(playerID, playGroundEntity)) {
             throw new PlayerAlreadyInGameException("Игрок уже добавлен в игру");
         }
-        if (playGroundEntity.addPlayerID(playerID)) {
+        if (PlayGroundLogic.addPlayerID(playerID, playGroundEntity)) {
             return playGroundRepository.save(playGroundEntity);
         }
         throw new GameIsFullException("В игре нет свободных мест");
@@ -63,10 +64,10 @@ public class GameService {
         }
         PlayGroundEntity playGroundEntity = new PlayGroundEntity(playGroundKeyKey, numberOfPlayers + 1, numberOfPlayers);
         Long playerID = playerRepository.findByPlayerKey(playerKey).getId();
-        if (playGroundEntity.playerIsIn(playerID)) {
+        if (PlayGroundLogic.playerIsIn(playerID, playGroundEntity)) {
             throw new PlayerAlreadyInGameException("Игрок уже добавлен в игру");
         }
-        if (playGroundEntity.addPlayerID(playerID)) {
+        if (PlayGroundLogic.addPlayerID(playerID, playGroundEntity)) {
             return playGroundRepository.save(playGroundEntity);
         }
         throw new GameIsFullException("В игре нет свободных мест");
@@ -84,14 +85,14 @@ public class GameService {
         }
         PlayGroundEntity playGroundEntity = new PlayGroundEntity(playGroundKeyKey, numberOfPlayers + 1, numberOfPlayers);
         Long playerID = playerRepository.findByPlayerKey(playerKey).getId();
-        if (playGroundEntity.playerIsIn(playerID)) {
+        if (PlayGroundLogic.playerIsIn(playerID, playGroundEntity)) {
             throw new PlayerAlreadyInGameException("Игрок уже добавлен в игру");
         }
-        if (!playGroundEntity.addPlayerID(playerID)) {
+        if (!PlayGroundLogic.addPlayerID(playerID, playGroundEntity)) {
             throw new GameIsFullException("В игре нет свободных мест");
         }
-        for (int i = 1; i < playGroundEntity.getMaxPlayers(); i++) {
-            if (!playGroundEntity.addPlayerID(AI.giveAI(1))) {
+        for (int i = 1; i < PlayGroundLogic.getMaxPlayers(playGroundEntity); i++) {
+            if (!PlayGroundLogic.addPlayerID(AI.giveAI(1), playGroundEntity)) {
                 throw new GameIsFullException("В игре нет свободных мест");
             }
         }
@@ -112,8 +113,8 @@ public class GameService {
         }
         PlayGroundEntity playGroundEntity = new PlayGroundEntity(playGroundKeyKey, numberOfPlayers + 1, numberOfPlayers);
         playGroundRepository.save(playGroundEntity);
-        for (int i = 0; i < playGroundEntity.getMaxPlayers(); i++) {
-            if (!playGroundEntity.addPlayerID(AI.giveAI(1))) {
+        for (int i = 0; i < PlayGroundLogic.getMaxPlayers(playGroundEntity); i++) {
+            if (!PlayGroundLogic.addPlayerID(AI.giveAI(1), playGroundEntity)) {
                 throw new GameIsFullException("В игре нет свободных мест");
             }
         }
@@ -136,19 +137,19 @@ public class GameService {
         char sign;
         allAISteps(playGroundEntity);
         int stepNo = playGroundEntity.getStepNo();
-        sign = playGroundEntity.getPlayersSignByStepNo(step.getPlayGroundId());
-        playGroundEntity.setSign(step.getPlayerId(), step.getCell());
+        sign = PlayGroundLogic.getPlayersSignByStepNo(step.getPlayGroundId(), playGroundEntity);
+        PlayGroundLogic.setSign(step.getPlayerId(), step.getCell(), playGroundEntity);
         stepRepository.save(new StepEntity(step.getPlayGroundId(), step.getPlayGroundKey(), step.getPlayerId(), step.getPlayerKey(), step.getCell(), stepNo, sign));
         playGroundRepository.save(playGroundEntity);
         allAISteps(playGroundEntity);
         playGroundEntity = playGroundRepository.getById(step.getPlayGroundId());
-        return playGroundEntity.getStrings();
+        return PlayGroundLogic.getStrings(playGroundEntity);
     }
 
     public PlayGroundEntity steps(Long playerKey, Long playerId, Long playGroundKey, Long playGroundId, int cell)
             throws NotAIIDException, NoVariantsException, NoCellException, NoPlayerInGameException, NotEmptyCellException, IncorrectSignException, GameOverException, NoGameException, GameIsNotFullException {
         PlayGroundEntity playGroundEntity = playGroundRepository.getById(playGroundId);
-        if (!playGroundEntity.gameIsFull()) {
+        if (!PlayGroundLogic.gameIsFull(playGroundEntity)) {
             throw new GameIsNotFullException("Дождитесь остальных игроков");
         }//проверка на gameIsFull
         if (!playGroundEntity.getPlayGroundKey().equals(playGroundKey)) {
@@ -161,8 +162,8 @@ public class GameService {
         char sign;
         allAISteps(playGroundEntity);
         int stepNo = playGroundEntity.getStepNo();
-        sign = playGroundEntity.getPlayersSignByStepNo(playerId);
-        playGroundEntity.setSign(playerId, cell);
+        sign = PlayGroundLogic.getPlayersSignByStepNo(playerId, playGroundEntity);
+        PlayGroundLogic.setSign(playerId, cell, playGroundEntity);
         stepRepository.save(new StepEntity(playGroundId, playGroundKey, playerId, playerKey, cell, stepNo, sign));
         playGroundRepository.save(playGroundEntity);
         allAISteps(playGroundEntity);
@@ -171,7 +172,7 @@ public class GameService {
     }
 
     public boolean isYourStep(Long playGroundId, Long playerId) {
-        return playGroundRepository.getById(playGroundId).getCurrentPlayersID().equals(playerId);
+        return PlayGroundLogic.getCurrentPlayersID(playGroundRepository.getById(playGroundId)).equals(playerId);
     }
 
     public PlayGroundEntity getPlayGround(Long playGroundId) {
@@ -184,12 +185,12 @@ public class GameService {
         char sign;
         Long tmpAIID;
         whoWin(playGroundEntity);
-        while (playGroundEntity.isThisPlayerAI()) {
+        while (PlayGroundLogic.isThisPlayerAI(playGroundEntity)) {
             stepNo = playGroundEntity.getStepNo();
-            tmpAIID = playGroundEntity.getCurrentPlayersID();
-            sign = playGroundEntity.getPlayersSignByStepNo(tmpAIID);
+            tmpAIID = PlayGroundLogic.getCurrentPlayersID(playGroundEntity);
+            sign = PlayGroundLogic.getPlayersSignByStepNo(tmpAIID, playGroundEntity);
             cell = AI.ai(playGroundEntity.getContent(), tmpAIID, sign);
-            playGroundEntity.setSign(tmpAIID, cell);
+            PlayGroundLogic.setSign(tmpAIID, cell, playGroundEntity);
             stepRepository.save(new StepEntity(playGroundEntity.getId(), playGroundEntity.getPlayGroundKey(), tmpAIID, tmpAIID, cell, stepNo, sign));
             playGroundRepository.save(playGroundEntity);
             whoWin(playGroundEntity);
@@ -201,7 +202,7 @@ public class GameService {
     }
 
     private void whoWin(PlayGroundEntity playGroundEntity) throws GameOverException {
-        char win = playGroundEntity.whoWin();
+        char win = PlayGroundLogic.whoWin(playGroundEntity.getContent());
         if (win == 0) {
             return;
         }
@@ -209,7 +210,7 @@ public class GameService {
             winRepository.save(new WinEntity(playGroundEntity.getId(), (long) win));
             throw new GameOverException("Игра закончилась вничью.");
         }
-        Long winnerId = playGroundEntity.getPlayersIDBySign(win);
+        Long winnerId = PlayGroundLogic.getPlayersIDBySign(win, playGroundEntity);
         if (winnerId < 0) {
             winRepository.save(new WinEntity(playGroundEntity.getId(),winnerId));
             throw new GameOverException("Игра закончилась победой бота " +AI.getAIName(winnerId));
@@ -220,6 +221,6 @@ public class GameService {
 
 
     public String getSymbol(Long playerId, Long playGroundId) throws NoPlayerInGameException {
-        return playGroundRepository.getById(playGroundId).getPlayersSignByID(playerId) + "";
+        return PlayGroundLogic.getPlayersSignByID(playerId, playGroundRepository.getById(playGroundId)) + "";
     }
 }

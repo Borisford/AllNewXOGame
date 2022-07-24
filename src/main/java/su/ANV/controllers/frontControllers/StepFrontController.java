@@ -12,6 +12,7 @@ import su.ANV.entities.PlayGroundEntity;
 import su.ANV.exeptions.*;
 import su.ANV.models.Step;
 import su.ANV.services.GameService;
+import su.ANV.subEntities.PlayGroundLogic;
 
 @Controller
 @RequestMapping("/gameplay/front/step")
@@ -44,7 +45,7 @@ public class StepFrontController {
             //e.printStackTrace();
             model.addAttribute("message", e.getMessage());
             try {
-                model.addAttribute("strings", playGroundEntity.getStringsNum());
+                model.addAttribute("strings", PlayGroundLogic.getStringsNum(playGroundEntity));
             } catch (NoCellException ex) {
                 e.printStackTrace();
             } catch (IncorrectSignException ex) {
@@ -53,7 +54,7 @@ public class StepFrontController {
             return  "endTheGame";
         }
         try {
-            model.addAttribute("strings", playGroundEntity.getStringsNum());
+            model.addAttribute("strings", PlayGroundLogic.getStringsNum(playGroundEntity));
         } catch (NoCellException e) {
             e.printStackTrace();
         } catch (IncorrectSignException e) {
@@ -81,7 +82,7 @@ public class StepFrontController {
             } catch (GameOverException e) {
                 //e.printStackTrace();
                 try {
-                    model.addAttribute("strings", playGroundEntity.getStringsNum());
+                    model.addAttribute("strings", PlayGroundLogic.getStringsNum(playGroundEntity));
                 } catch (NoCellException ex) {
                     e.printStackTrace();
                 } catch (IncorrectSignException ex) {
@@ -97,7 +98,7 @@ public class StepFrontController {
             }
         }
         try {
-            model.addAttribute("strings", playGroundEntity.getStringsNum());
+            model.addAttribute("strings", PlayGroundLogic.getStringsNum(playGroundEntity));
         } catch (NoCellException e) {
             e.printStackTrace();
         } catch (IncorrectSignException e) {

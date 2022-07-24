@@ -3,6 +3,7 @@ package su.ANV.units.AI;
 import su.ANV.entities.PlayGroundEntity;
 import su.ANV.exeptions.NoVariantsException;
 import su.ANV.exeptions.NotAIIDException;
+import su.ANV.subEntities.PlayGroundLogic;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -58,7 +59,7 @@ public class AI{
                 chance[i] = 0;
             }
         }
-        int side = PlayGroundEntity.getSide(content);
+        int side = PlayGroundLogic.getSide(content);
         rowsAndColumns(content, chance, side, sign);
         return chanceMax(chance);
     }

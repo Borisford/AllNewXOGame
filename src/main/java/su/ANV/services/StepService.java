@@ -10,6 +10,7 @@ import su.ANV.models.DemoStep;
 import su.ANV.repositories.PlayGroundRepository;
 import su.ANV.repositories.PlayerRepository;
 import su.ANV.repositories.StepRepository;
+import su.ANV.subEntities.PlayGroundLogic;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -51,7 +52,7 @@ public class StepService {
 
     private List<DemoStep> toDemoStep(List<StepEntity> stepEntityList) throws NoCellException {
         PlayGroundEntity playGroundEntity = playGroundRepository.getById(stepEntityList.get(0).getPlayGroundId());
-        int side = PlayGroundEntity.getSide(playGroundEntity.getContent());
+        int side = PlayGroundLogic.getSide(playGroundEntity.getContent());
         char[] content = new char[side * side];
         for (int i = 0; i < side * side; i++) {
             content[i] = 0;
@@ -73,7 +74,7 @@ public class StepService {
             sign = stepEntity.getSign();
             cell = stepEntity.getCell();
             content[cell] = sign;
-            field = PlayGroundEntity.getStrings(content);
+            field = PlayGroundLogic.getStrings(content);
             stepNo = stepEntity.getStepNo();
             res.add(new DemoStep(name, stepNo, sign, field));
         }
