@@ -15,7 +15,7 @@ public class PlayGroundController {
     private PlayGroundService playGroundService;
 
     @GetMapping
-    public ResponseEntity getAllPlayGrounds() {
+    public ResponseEntity<Object> getAllPlayGrounds() {
         try {
             return ResponseEntity.ok(playGroundService.getAllPlayGrounds());
         } catch (Exception e) {
@@ -24,7 +24,7 @@ public class PlayGroundController {
     }
 
     @GetMapping("/{playerKey}")
-    public ResponseEntity getPlayer(@PathVariable Long playerKey) {
+    public ResponseEntity<Object> getPlayer(@PathVariable Long playerKey) {
         try {
             return ResponseEntity.ok(playGroundService.getPlayGround(playerKey));
         } catch (Exception e) {

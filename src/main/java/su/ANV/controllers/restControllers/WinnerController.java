@@ -15,7 +15,7 @@ public class WinnerController {
     private WinService winService;
 
     @GetMapping("/player/{winnerId}")
-    public ResponseEntity getNumberOfPlayersWins(@PathVariable Long winnerId) {
+    public ResponseEntity<Object> getNumberOfPlayersWins(@PathVariable Long winnerId) {
         try {
             return ResponseEntity.ok(winService.getNumberOfPlayersWins(winnerId));
         } catch (Exception e) {
@@ -24,7 +24,7 @@ public class WinnerController {
     }
 
     @GetMapping("/game/{playGroundId}")
-    public ResponseEntity getGameWinnerName(@PathVariable Long playGroundId) {
+    public ResponseEntity<Object> getGameWinnerName(@PathVariable Long playGroundId) {
         try {
             return ResponseEntity.ok(winService.getGameWinnerName(playGroundId));
         } catch (Exception e) {

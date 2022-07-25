@@ -14,7 +14,7 @@ public class StartController {
     private GameService gameService;
 
     @PostMapping("/simple/auto")
-    public ResponseEntity startComplexGame() {
+    public ResponseEntity<Object> startComplexGame() {
         try {
             return ResponseEntity.ok(gameService.startAutoGame());
         } catch (BadNumberOfPlayersException | BadPlaygroundSideException | GameIsFullException | NotAIIDException | NoCellException | NoVariantsException | NoPlayerInGameException | NotEmptyCellException | GameOverException e){
@@ -25,7 +25,7 @@ public class StartController {
     }
 
     @PostMapping("/simple/single")
-    public ResponseEntity startSingleGame(@RequestParam Long playerKey) {
+    public ResponseEntity<Object> startSingleGame(@RequestParam Long playerKey) {
         try {
             return ResponseEntity.ok(gameService.startSinglePlayerGame(playerKey));
         } catch (BadNumberOfPlayersException | BadPlaygroundSideException | PlayerAlreadyInGameException | GameIsFullException e){
@@ -36,7 +36,7 @@ public class StartController {
     }
 
     @PostMapping("/simple/multi")
-    public ResponseEntity startMultiPlayerGame(@RequestParam Long playerKey) {
+    public ResponseEntity<Object> startMultiPlayerGame(@RequestParam Long playerKey) {
         try {
             return ResponseEntity.ok(gameService.startMultiPlayerGame(playerKey));
         } catch (BadNumberOfPlayersException | BadPlaygroundSideException | PlayerAlreadyInGameException | GameIsFullException e){
@@ -47,7 +47,7 @@ public class StartController {
     }
 
     @PostMapping("/complex/auto")
-    public ResponseEntity startComplexAutoGame(@RequestParam int numberOfPlayers) {
+    public ResponseEntity<Object> startComplexAutoGame(@RequestParam int numberOfPlayers) {
         try {
             return ResponseEntity.ok(gameService.startComplexAutoGame(numberOfPlayers));
         } catch (BadNumberOfPlayersException | BadPlaygroundSideException | GameIsFullException | NotAIIDException | NoCellException | NoVariantsException | NoPlayerInGameException | NotEmptyCellException | GameOverException e){
@@ -58,7 +58,7 @@ public class StartController {
     }
 
     @PostMapping("/complex/single")
-    public ResponseEntity startComplexSingleGame(@RequestParam Long playerKey, @RequestParam int numberOfPlayers) {
+    public ResponseEntity<Object> startComplexSingleGame(@RequestParam Long playerKey, @RequestParam int numberOfPlayers) {
         try {
             return ResponseEntity.ok(gameService.startComplexSinglePlayerGame(playerKey, numberOfPlayers));
         } catch (BadNumberOfPlayersException | BadPlaygroundSideException | PlayerAlreadyInGameException | GameIsFullException e){
@@ -69,7 +69,7 @@ public class StartController {
     }
 
     @PostMapping("/complex/multi")
-    public ResponseEntity startComplexMultiPlayerGame(@RequestParam Long playerKey, @RequestParam int numberOfPlayers) {
+    public ResponseEntity<Object> startComplexMultiPlayerGame(@RequestParam Long playerKey, @RequestParam int numberOfPlayers) {
         try {
             return ResponseEntity.ok(gameService.startComplexMultiPlayerGame(playerKey, numberOfPlayers));
         } catch (BadNumberOfPlayersException | BadPlaygroundSideException | PlayerAlreadyInGameException | GameIsFullException e){

@@ -16,7 +16,7 @@ public class PlayerController {
     private GameService gameService;
 
     @GetMapping
-    public ResponseEntity getAllPayers() {
+    public ResponseEntity<Object> getAllPayers() {
         try {
             return ResponseEntity.ok(playerService.getAllPlayers());
         } catch (Exception e) {
@@ -25,7 +25,7 @@ public class PlayerController {
     }
 
     @GetMapping("/{playerKey}")
-    public ResponseEntity getPlayer(@PathVariable Long playerKey) {
+    public ResponseEntity<Object> getPlayer(@PathVariable Long playerKey) {
         try {
             return ResponseEntity.ok(playerService.getPlayer(playerKey));
         } catch (Exception e) {
@@ -35,7 +35,7 @@ public class PlayerController {
 
 
     @PostMapping
-    public ResponseEntity createPlayer(@RequestParam String name) {
+    public ResponseEntity<Object> createPlayer(@RequestParam String name) {
         try {
             return ResponseEntity.ok(playerService.createPlayerEntity(name));
         } catch (NotUniquePlayerException | NoNameException e){
@@ -46,7 +46,7 @@ public class PlayerController {
     }
 
     @PutMapping
-    public ResponseEntity addPlayer(@RequestParam Long playerKey, @RequestParam String playGroundKey) {
+    public ResponseEntity<Object> addPlayer(@RequestParam Long playerKey, @RequestParam String playGroundKey) {
         try {
             return ResponseEntity.ok(gameService.addPlayerToPlayerToPlayGround(playerKey, playGroundKey));
         } catch (NoGameException | GameIsFullException | NoPlayerException | PlayerAlreadyInGameException e){

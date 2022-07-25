@@ -17,7 +17,7 @@ public class StepController {
     private GameService gameService;
 
     @GetMapping
-    public ResponseEntity getAllSteps() {
+    public ResponseEntity<Object> getAllSteps() {
         try {
             return ResponseEntity.ok(stepService.getAllSteps());
         } catch (Exception e) {
@@ -26,7 +26,7 @@ public class StepController {
     }
 
     @GetMapping("/{playGroundKey}")
-    public ResponseEntity getTheGame(@PathVariable Long playGroundKey) throws NoCellException {
+    public ResponseEntity<Object> getTheGame(@PathVariable Long playGroundKey) throws NoCellException {
         try {
             return ResponseEntity.ok(stepService.getTheGame(playGroundKey));
         } catch (NoCellException e){
@@ -37,7 +37,7 @@ public class StepController {
     }
 
     @PostMapping
-    public ResponseEntity makeManualStep(@RequestBody Step step) {
+    public ResponseEntity<Object> makeManualStep(@RequestBody Step step) {
         try {
             return ResponseEntity.ok(gameService.step(step));
         } catch (NotAIIDException | NoVariantsException | NoCellException | NoPlayerInGameException | NotEmptyCellException e){
