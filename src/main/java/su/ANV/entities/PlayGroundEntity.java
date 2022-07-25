@@ -1,6 +1,7 @@
 package su.ANV.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 import su.ANV.exeptions.*;
 import su.ANV.subEntities.PlayGroundLogic;
@@ -11,6 +12,7 @@ import javax.persistence.Id;
 import java.util.Arrays;
 
 @Entity
+@Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class PlayGroundEntity implements PlayGroundLogic {
 
@@ -72,59 +74,7 @@ public class PlayGroundEntity implements PlayGroundLogic {
             throw new BadNumberOfPlayersException("Колличество игроков" +maxPlayers+ " не находится в диапозоне от 2 до 7 включительно, или больше стороны поля " +side);
         }
     }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getPlayGroundKey() {
-        return playGroundKey;
-    }
-
-    public void setPlayGroundKey(Long playGroundKey) {
-        this.playGroundKey = playGroundKey;
-    }
-
-    public char[] getContent() {
-        return content;
-    }
-
-    public void setContent(char[] content) {
-        this.content = content;
-    }
-
-    public int getStepNo() {
-        return stepNo;
-    }
-
-    public void setStepNo(int stepNo) {
-        this.stepNo = stepNo;
-    }
-
     public void nextStep() {
         this.stepNo = this.stepNo + 1;
-    }
-
-    public Long[] getPlayerIDs() {
-        return playerIDs;
-    }
-
-    public void setPlayerIDs(Long[] playerIDs) {
-        this.playerIDs = playerIDs;
-    }
-
-    @Override
-    public String toString() {
-        return "PlayGroundEntity{" +
-                "id=" + id +
-                ", playGroundKey=" + playGroundKey +
-                ", content=" + Arrays.toString(content) +
-                ", stepNo=" + stepNo +
-                ", players=" + Arrays.toString(playerIDs) +
-                '}';
     }
 }

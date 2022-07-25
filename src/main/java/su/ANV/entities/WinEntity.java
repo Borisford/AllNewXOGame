@@ -1,5 +1,6 @@
 package su.ANV.entities;
 
+import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.Entity;
@@ -7,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity
+@Data
 public class WinEntity {
     @Id
     @GenericGenerator(name = "generator", strategy = "random")
@@ -22,38 +24,5 @@ public class WinEntity {
     public WinEntity(Long playGroundId, Long winnerId) {
         this.playGroundId = playGroundId;
         this.winnerId = winnerId;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getPlayGroundId() {
-        return playGroundId;
-    }
-
-    public void setPlayGroundId(Long playGroundId) {
-        this.playGroundId = playGroundId;
-    }
-
-    public Long getWinnerId() {
-        return winnerId;
-    }
-
-    public void setWinnerId(Long winnerId) {
-        this.winnerId = winnerId;
-    }
-
-    @Override
-    public String toString() {
-        return "WinEntity{" +
-                "id=" + id +
-                ", playGroundId=" + playGroundId +
-                ", winnerId=" + winnerId +
-                '}';
     }
 }
