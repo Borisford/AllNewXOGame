@@ -1,7 +1,9 @@
 package su.ANV.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 import su.ANV.exeptions.*;
 import su.ANV.subEntities.PlayGroundLogic;
@@ -13,6 +15,8 @@ import java.util.Arrays;
 
 @Entity
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class PlayGroundEntity implements PlayGroundLogic {
 
@@ -25,9 +29,6 @@ public class PlayGroundEntity implements PlayGroundLogic {
     private char[] content;
     private int stepNo;
     private Long[] playerIDs;
-
-    public PlayGroundEntity() {
-    }
 
     public PlayGroundEntity(Long playGroundKey) throws BadNumberOfPlayersException, BadPlaygroundSideException {
         //new PlayGroundEntity(playGroundKey, 3, 2);
@@ -56,14 +57,6 @@ public class PlayGroundEntity implements PlayGroundLogic {
         for (int i = 0; i < maxPlayers; i++) {
             this.playerIDs[i] = 0L;
         }
-    }
-
-    public PlayGroundEntity(Long id, Long playGroundKey, char[] content, int stepNo, Long[] playerIDs) {
-        this.id = id;
-        this.playGroundKey = playGroundKey;
-        this.content = content;
-        this.stepNo = stepNo;
-        this.playerIDs = playerIDs;
     }
 
     private void incomingValid(int side, int maxPlayers) throws BadPlaygroundSideException, BadNumberOfPlayersException {

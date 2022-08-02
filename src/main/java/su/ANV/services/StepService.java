@@ -1,5 +1,6 @@
 package su.ANV.services;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import su.ANV.entities.PlayGroundEntity;
@@ -18,15 +19,11 @@ import java.util.List;
 import java.util.Map;
 
 @Service
+@RequiredArgsConstructor
 public class StepService {
-    @Autowired
-    private StepRepository stepRepository;
-
-    @Autowired
-    private PlayerRepository playerRepository;
-
-    @Autowired
-    private PlayGroundRepository playGroundRepository;
+    private final StepRepository stepRepository;
+    private final PlayerRepository playerRepository;
+    private final PlayGroundRepository playGroundRepository;
 
     public List<StepEntity> getAllSteps() {
         return new ArrayList<>(stepRepository.findAll());

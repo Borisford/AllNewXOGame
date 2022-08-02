@@ -1,5 +1,6 @@
 package su.ANV.services;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import su.ANV.entities.PlayerEntity;
@@ -12,9 +13,9 @@ import java.util.List;
 import java.util.Random;
 
 @Service
+@RequiredArgsConstructor
 public class PlayerService {
-    @Autowired
-    private PlayerRepository playerRepository;
+    private final PlayerRepository playerRepository;
 
     public PlayerEntity createPlayerEntity(String name) throws NotUniquePlayerException, NoNameException {
         if (name.isEmpty()) {

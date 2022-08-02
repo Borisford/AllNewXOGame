@@ -1,5 +1,6 @@
 package su.ANV.services;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import su.ANV.entities.PlayGroundEntity;
@@ -18,18 +19,12 @@ import su.ANV.units.AI.AI;
 import java.util.Random;
 
 @Service
+@RequiredArgsConstructor
 public class GameService {
-    @Autowired
-    private PlayerRepository playerRepository;
-
-    @Autowired
-    private PlayGroundRepository playGroundRepository;
-
-    @Autowired
-    private StepRepository stepRepository;
-
-    @Autowired
-    private WinRepository winRepository;
+    private final PlayerRepository playerRepository;
+    private final PlayGroundRepository playGroundRepository;
+    private final StepRepository stepRepository;
+    private final WinRepository winRepository;
 
     public PlayGroundEntity addPlayerToPlayerToPlayGround(Long playerKey, String playGroundKeyStr)
             throws NoGameException, NoPlayerException, GameIsFullException, PlayerAlreadyInGameException, NumberFormatException {

@@ -1,5 +1,6 @@
 package su.ANV.services;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import su.ANV.entities.WinEntity;
@@ -9,9 +10,9 @@ import su.ANV.repositories.WinRepository;
 import su.ANV.units.AI.AI;
 
 @Service
+@RequiredArgsConstructor
 public class WinService {
-    @Autowired
-    private WinRepository winRepository;
+    private final WinRepository winRepository;
 
     @Autowired
     private PlayerRepository playerRepository;

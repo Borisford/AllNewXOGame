@@ -1,6 +1,8 @@
 package su.ANV.entities;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.Entity;
@@ -9,6 +11,8 @@ import javax.persistence.Id;
 
 @Entity
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class StepEntity {
     @Id
     @GenericGenerator(name = "strepGenerator", strategy = "random")
@@ -23,16 +27,8 @@ public class StepEntity {
     private int stepNo;
     private char sign;
 
-    public StepEntity() {
-    }
 
     public StepEntity(Long playGroundId, Long playGroundKey, Long playerId, Long playerKey, int cell, int stepNo, char sign) {
-        this.playGroundId = playGroundId;
-        this.playGroundKey = playGroundKey;
-        this.playerId = playerId;
-        this.playerKey = playerKey;
-        this.cell = cell;
-        this.stepNo = stepNo;
-        this.sign = sign;
+        this(null, playGroundId, playGroundKey, playerId, playerKey, cell, stepNo, sign);
     }
 }
