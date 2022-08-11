@@ -36,7 +36,7 @@ public class PlayerService {
         return new ArrayList<>(playerRepository.findAll());
     }
 
-    public Object getPlayer(Long playerKey) {
+    public PlayerEntity getPlayer(Long playerKey) {
         return playerRepository.findByPlayerKey(playerKey);
     }
 }

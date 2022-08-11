@@ -18,7 +18,7 @@ public class PlayGroundService {
         return new ArrayList<>(playGroundRepository.findAll());
     }
 
-    public Object getPlayGround(Long playGroundKey) {
+    public PlayGroundEntity getPlayGround(Long playGroundKey) {
         return playGroundRepository.findByPlayGroundKey(playGroundKey);
     }
 }
